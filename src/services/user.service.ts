@@ -4,18 +4,16 @@ import { getClient } from "../database/mongo.init";
 //user defined
 import { ErrorHandler, ErrorType } from "../handlers/errorHandler";
 
-//interfaces
-import { Chat } from "../model/chat";
+//interface
+import { User } from "../model/user";
 
-export async function getUserMessages(userId: string) {
+export async function getAllUsers(): Promise<User[]> {
   let client = await getClient();
   if (!client)
     throw new ErrorHandler("db", "client not connected", ErrorType.DB);
 
   let database = client.db("chatBox");
-  let chat = database.collection<Chat>("chats");
+  let chat = database.collection<User>("users");
 
-  let data = await chat.find({}).toArray();
-
-  console.log(data);
+  return await chat.find({}).toArray();
 }
